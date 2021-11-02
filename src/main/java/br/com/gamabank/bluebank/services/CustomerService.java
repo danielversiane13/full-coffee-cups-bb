@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.gamabank.bluebank.dto.CustomerDto;
 import br.com.gamabank.bluebank.entities.Customer;
+import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
+import br.com.gamabank.bluebank.exceptions.NotFoundException;
 import br.com.gamabank.bluebank.factories.CustomerFactory;
 import br.com.gamabank.bluebank.forms.CustomerForm;
 import br.com.gamabank.bluebank.repositories.CustomerRepository;
@@ -27,10 +29,10 @@ public class CustomerService {
 		return repository.findAll(_pageable).map(CustomerFactory::Create);
 	}
 
-	public CustomerDto findById(UUID id) {
-		var result = repository.findById(id);
+	public CustomerDto findById(UUID id) throws ExceptionHandler {
+		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
-		return result.isPresent() ? CustomerFactory.Create(result.get()) : null;
+		return CustomerFactory.Create(customer);
 	}
 
 	public CustomerDto create(CustomerForm form) {
@@ -40,14 +42,8 @@ public class CustomerService {
 		return CustomerFactory.Create(customer);
 	}
 
-	public CustomerDto update(CustomerForm form, UUID id) {
-		var result = repository.findById(id);
-
-		if (!result.isPresent()) {
-			return null;
-		}
-
-		var customer = result.get();
+	public CustomerDto update(CustomerForm form, UUID id) throws ExceptionHandler {
+		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
 		customer.setName(form.name);
 		customer.setCpfCnpj(form.cpfCnpj);
@@ -61,8 +57,9 @@ public class CustomerService {
 		return CustomerFactory.Create(customer);
 	}
 
-	public void deleteById(UUID id) {
-		repository.deleteById(id);
+	public void deleteById(UUID id) throws ExceptionHandler {
+		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
+		repository.delete(customer);
 	}
 
 }

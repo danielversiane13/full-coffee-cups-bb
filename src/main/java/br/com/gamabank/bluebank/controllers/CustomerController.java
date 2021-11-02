@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.gamabank.bluebank.forms.CustomerForm;
 import br.com.gamabank.bluebank.dto.CustomerDto;
+import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.services.CustomerService;
 
 @RestController
@@ -43,19 +44,20 @@ public class CustomerController {
 	}
 
 	@GetMapping(value = "/{customerId}")
-	public ResponseEntity<CustomerDto> findById(@PathVariable UUID customerId) {
-		var result = service.findById(customerId);
-		return result != null ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+	public ResponseEntity<CustomerDto> findById(@PathVariable UUID customerId) throws ExceptionHandler {
+		var dto = service.findById(customerId);
+		return ResponseEntity.ok(dto);
 	}
 
 	@PutMapping(value = "/{customerId}")
-	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId, @RequestBody @Valid CustomerForm form) {
+	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId, @RequestBody @Valid CustomerForm form)
+			throws ExceptionHandler {
 		var dto = service.update(form, customerId);
-		return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+		return ResponseEntity.ok(dto);
 	}
 
 	@DeleteMapping(value = "/{customerId}")
-	public ResponseEntity<Void> destroy(@PathVariable UUID customerId) {
+	public ResponseEntity<Void> destroy(@PathVariable UUID customerId) throws ExceptionHandler {
 		service.deleteById(customerId);
 		return ResponseEntity.noContent().build();
 	}

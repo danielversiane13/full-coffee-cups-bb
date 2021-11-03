@@ -1,6 +1,7 @@
 package br.com.gamabank.bluebank.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Address extends SuperEntity{
@@ -10,20 +11,22 @@ public class Address extends SuperEntity{
     public String country;
     public String zipcode;
     
-    public Address() 
-    { 
+    @ManyToOne 
+	private Customer customer;
+    
+    public Address() { 
     	super(); 
     }
     
-    public Address(String street, String city, String state, String country, String zipcode)
-    {
-    	super();
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-        this.zipcode = zipcode;
-    }
+	public Address(String street, String city, String state, String country, String zipcode, Customer customer) {
+		super();
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.zipcode = zipcode;
+		this.customer = customer;
+	}
 
 	public String getStreet() {
 		return street;
@@ -64,4 +67,13 @@ public class Address extends SuperEntity{
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 }

@@ -4,28 +4,33 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Address extends SuperEntity{
+public class Address extends SuperEntity {
+
 	public String street;
-    public String city;
-    public String state;
-    public String country;
-    public String zipcode;
-    
-    @ManyToOne 
+	public String city;
+	public String state;
+	public String country;
+	public String zipcode;
+	public String complement;
+	public String neighborhood;
+
+	@ManyToOne 
 	private Customer customer;
-    
-    public Address() { 
-    	super(); 
-    }
-    
-	public Address(String street, String city, String state, String country, String zipcode, Customer customer) {
+
+	public Address() { 
+		super(); 
+	}
+
+	public Address(Customer customer, String street, String city, String state, String country, String zipcode,String complement, String neighborhood) {
 		super();
+		this.customer = customer;
 		this.street = street;
 		this.city = city;
 		this.state = state;
 		this.country = country;
 		this.zipcode = zipcode;
-		this.customer = customer;
+		this.complement = complement;
+		this.neighborhood = neighborhood;
 	}
 
 	public String getStreet() {
@@ -66,6 +71,22 @@ public class Address extends SuperEntity{
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public String getComplement() {
+		return complement;
+	}
+
+	public void setComplement(String complement) {
+		this.complement = complement;
+	}
+
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
 	public Customer getCustomer() {

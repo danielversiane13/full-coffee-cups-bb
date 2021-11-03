@@ -7,10 +7,8 @@ import javax.persistence.Entity;
 @Entity
 public class BalanceTransfer extends SuperEntity{
 	
-//	Aguardando criação da classe BankAccount para descomentar e criar get/set:
-//	private BankAccount fromBankAccount;
-//	private BankAccount toBankAccount;
-	
+	private BankAccount fromBankAccount;
+	private BankAccount toBankAccount;
 	private double value;
 	private LocalDateTime movementedAt;
 	
@@ -19,17 +17,33 @@ public class BalanceTransfer extends SuperEntity{
 	}
 	
 	public BalanceTransfer(
-//			BankAccount fromBankAccount, 
-//			BankAccount toBankAccount, 
+			BankAccount fromBankAccount, 
+			BankAccount toBankAccount, 
 			double value,
 			LocalDateTime movementedAt) {
 		
 		super();
 		
-//		this.fromBankAccount = fromBankAccount;
-//		this.toBankAccount = toBankAccount;
+		this.fromBankAccount = fromBankAccount;
+		this.toBankAccount = toBankAccount;
 		this.value = value;
 		this.movementedAt = movementedAt;
+	}
+
+	public BankAccount getFromBankAccount() {
+		return fromBankAccount;
+	}
+
+	public void setFromBankAccount(BankAccount fromBankAccount) {
+		this.fromBankAccount = fromBankAccount;
+	}
+
+	public BankAccount getToBankAccount() {
+		return toBankAccount;
+	}
+
+	public void setToBankAccount(BankAccount toBankAccount) {
+		this.toBankAccount = toBankAccount;
 	}
 
 	public double getValue() {

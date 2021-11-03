@@ -3,27 +3,25 @@ package br.com.gamabank.bluebank.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
-public class BalanceTransfer extends SuperEntity{
-	
+public class BalanceTransfer extends SuperEntity {
+
+	@OneToOne
 	private BankAccount fromBankAccount;
+	@OneToOne
 	private BankAccount toBankAccount;
 	private double value;
 	private LocalDateTime movementedAt;
-	
+
 	public BalanceTransfer() {
 		super();
 	}
-	
-	public BalanceTransfer(
-			BankAccount fromBankAccount, 
-			BankAccount toBankAccount, 
-			double value,
+
+	public BalanceTransfer(BankAccount fromBankAccount, BankAccount toBankAccount, double value,
 			LocalDateTime movementedAt) {
-		
 		super();
-		
 		this.fromBankAccount = fromBankAccount;
 		this.toBankAccount = toBankAccount;
 		this.value = value;
@@ -61,5 +59,5 @@ public class BalanceTransfer extends SuperEntity{
 	public void setMovementedAt(LocalDateTime movementedAt) {
 		this.movementedAt = movementedAt;
 	}
-	
+
 }

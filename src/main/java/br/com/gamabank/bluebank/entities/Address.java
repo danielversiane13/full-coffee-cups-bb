@@ -1,32 +1,37 @@
 package br.com.gamabank.bluebank.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Address extends SuperEntity{
+public class Address extends SuperEntity {
+
 	private String street;
 	private String city;
 	private String state;
 	private String country;
 	private String zipcode;
-	private String number;
 	private String complement;
 	private String neighborhood;
-    
-    public Address() 
-    { 
-    	super(); 
-    }
-    
-    public Address(String street, String city, String state, String country, String zipcode, String number, String complement, String neighborhood )
-    {
-    	super();
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-        this.zipcode = zipcode;
-    }
+
+	@ManyToOne 
+	private Customer customer;
+
+	public Address() { 
+		super(); 
+	}
+
+	public Address(Customer customer, String street, String city, String state, String country, String zipcode, String complement, String neighborhood) {
+		super();
+		this.customer = customer;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.zipcode = zipcode;
+		this.complement = complement;
+		this.neighborhood = neighborhood;
+	}
 
 	public String getStreet() {
 		return street;
@@ -91,4 +96,13 @@ public class Address extends SuperEntity{
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
 	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 }

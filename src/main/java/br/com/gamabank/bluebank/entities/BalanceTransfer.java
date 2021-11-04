@@ -3,15 +3,17 @@ package br.com.gamabank.bluebank.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class BalanceTransfer extends SuperEntity {
 
-	@OneToOne
+	@ManyToOne 
 	private BankAccount fromBankAccount;
-	@OneToOne
+	
+	@ManyToOne 
 	private BankAccount toBankAccount;
+	
 	private double value;
 	private LocalDateTime movementedAt;
 

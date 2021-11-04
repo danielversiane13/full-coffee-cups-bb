@@ -4,14 +4,14 @@ import javax.persistence.Entity;
 
 @Entity
 public class Address extends SuperEntity{
-	public String street;
-    public String city;
-    public String state;
-    public String country;
-    public String zipcode;
-    public String number;
-    public String complement;
-    public String neighborhood;
+	private String street;
+	private String city;
+	private String state;
+	private String country;
+	private String zipcode;
+	private String number;
+	private String complement;
+	private String neighborhood;
     
     public Address() 
     { 

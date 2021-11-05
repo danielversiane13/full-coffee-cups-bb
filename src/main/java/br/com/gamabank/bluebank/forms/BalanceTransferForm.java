@@ -1,24 +1,18 @@
 package br.com.gamabank.bluebank.forms;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import br.com.gamabank.bluebank.entities.BankAccount;
 
 public class BalanceTransferForm {
 
-	@NotNull
 	@NotBlank
-	@NotEmpty
-	public BankAccount fromBankAccount;
+	public UUID fromBankAccountId;
 	
-	@NotNull
 	@NotBlank
-	@NotEmpty
-	public BankAccount toBankAccount;
+	public UUID toBankAccountId;
 	
 	@NotNull
 	public double value;

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,27 +22,26 @@ import br.com.gamabank.bluebank.forms.BalanceTransferForm;
 import br.com.gamabank.bluebank.services.BalanceTransferService;
 
 @RestController
-@RequestMapping("/balance-transfer")
 public class BalanceTransferController {
 
 	@Autowired
 	private BalanceTransferService service;
 
-	@GetMapping
-	public ResponseEntity<Page<BalanceTransferDto>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(service.findAll(pageable));
+	@GetMapping(value = "/customers/{customerId}/balance-transfer")
+	public ResponseEntity<Page<BalanceTransferDto>> findByCustomerId(Pageable pageable, UUID customerId) {
+		return ResponseEntity.ok(service.findByCustomerId(pageable, customerId));
 	}
 	
-	@GetMapping(value = "/customers/{customer_id}/balance-transfer")
+	@GetMapping(value = "/balance-transfer/{balanceTransferId}")
 	public ResponseEntity<BalanceTransferDto> findById(@PathVariable UUID balanceTransferId) throws ExceptionHandler {
 		var dto = service.findById(balanceTransferId);
 		return ResponseEntity.ok(dto);
 	}
 
-	@PostMapping
-	public ResponseEntity<BalanceTransferDto> add(@RequestBody @Valid BalanceTransferForm form, UriComponentsBuilder uriBuilder) {
+	@PostMapping(value = "/balance-transfer")
+	public ResponseEntity<BalanceTransferDto> add(@RequestBody @Valid BalanceTransferForm form, UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.create(form);
-		URI uri = uriBuilder.path("/customers/{customer_id}/bank-accounts/balance-transfer").buildAndExpand(dto.id).toUri();
+		URI uri = uriBuilder.path("/customers/{customerId}/bank-accounts/balance-transfer").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 

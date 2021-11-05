@@ -14,6 +14,7 @@ import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.exceptions.NotFoundException;
 import br.com.gamabank.bluebank.factories.CustomerFactory;
 import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.repositories.CustomerRepository;
 import br.com.gamabank.bluebank.utils.PageableUtil;
 
@@ -60,6 +61,17 @@ public class CustomerService {
 	public void deleteById(UUID id) throws ExceptionHandler {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 		repository.delete(customer);
+	}
+
+	public CustomerDto updateActive(UpdateCustomerActiveForm form, UUID id) throws ExceptionHandler {
+		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
+
+		customer.setActive(form.active);
+		customer.setUpdatedAt(LocalDateTime.now());
+
+		repository.save(customer);
+
+		return CustomerFactory.Create(customer);
 	}
 
 }

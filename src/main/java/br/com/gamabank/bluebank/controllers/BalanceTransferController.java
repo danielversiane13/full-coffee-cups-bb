@@ -27,11 +27,12 @@ public class BalanceTransferController {
 	@Autowired
 	private BalanceTransferService service;
 
-	@GetMapping(value = "/customers/{customerId}/balance-transfer")
-	public ResponseEntity<Page<BalanceTransferDto>> findByCustomerId(Pageable pageable, UUID customerId) {
-		return ResponseEntity.ok(service.findByCustomerId(pageable, customerId));
+	@GetMapping(value = "/bank-accounts/{bankAccountId}/balance-transfer")
+	public ResponseEntity<Page<BalanceTransferDto>> findByFromBankAccountId(Pageable pageable,
+			@PathVariable UUID bankAccountId) {
+		return ResponseEntity.ok(service.findByFromBankAccountId(pageable, bankAccountId));
 	}
-	
+
 	@GetMapping(value = "/balance-transfer/{balanceTransferId}")
 	public ResponseEntity<BalanceTransferDto> findById(@PathVariable UUID balanceTransferId) throws ExceptionHandler {
 		var dto = service.findById(balanceTransferId);
@@ -39,9 +40,11 @@ public class BalanceTransferController {
 	}
 
 	@PostMapping(value = "/balance-transfer")
-	public ResponseEntity<BalanceTransferDto> add(@RequestBody @Valid BalanceTransferForm form, UriComponentsBuilder uriBuilder) throws ExceptionHandler {
+	public ResponseEntity<BalanceTransferDto> add(@RequestBody @Valid BalanceTransferForm form,
+			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.create(form);
-		URI uri = uriBuilder.path("/customers/{customerId}/bank-accounts/balance-transfer").buildAndExpand(dto.id).toUri();
+		URI uri = uriBuilder.path("/customers/{customerId}/bank-accounts/balance-transfer").buildAndExpand(dto.id)
+				.toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 

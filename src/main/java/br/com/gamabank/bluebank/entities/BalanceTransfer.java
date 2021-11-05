@@ -8,12 +8,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class BalanceTransfer extends SuperEntity {
 
-	@ManyToOne 
+	@ManyToOne
 	private BankAccount fromBankAccount;
-	
-	@ManyToOne 
+	@ManyToOne
 	private BankAccount toBankAccount;
-	
+
 	private double value;
 	private LocalDateTime movementedAt;
 

@@ -12,6 +12,6 @@ import br.com.gamabank.bluebank.entities.BalanceTransfer;
 @Repository
 public interface BalanceTransferRepository extends JpaRepository<BalanceTransfer, UUID> {
 
-	Page<BalanceTransfer> findByCustomerId(Pageable _pageable, UUID id);
+	public Page<BalanceTransfer> findByFromBankAccountId(Pageable _pageable, UUID id);
 
 }

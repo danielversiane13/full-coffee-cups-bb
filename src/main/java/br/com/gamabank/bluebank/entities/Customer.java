@@ -26,6 +26,16 @@ public class Customer extends SuperEntity {
 		this.phone = phone;
 	}
 
+	public Customer(String name, String cpfCnpj, LocalDate birthDate, String email, String phone, boolean active) {
+		super();
+		this.name = name;
+		this.cpfCnpj = cpfCnpj;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.phone = phone;
+		this.setActive(active);
+	}
+
 	public String getName() {
 		return name;
 	}

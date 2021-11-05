@@ -152,4 +152,48 @@ class CustomerControllerIntegrationTest {
 		Assertions.assertFalse(customerRepository.findById(customer.getId()).isPresent());
 	}
 
+	@Test
+	void it_can_inactivate_a_customer() throws Exception {
+		// Arrange
+		Customer customer = customerRepository.save(this.baseCustomer);
+
+		UpdateCustomerActiveForm customerForm = new UpdateCustomerActiveForm();
+		customerForm.active = false;
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonContent = mapper.writeValueAsString(customerForm);
+
+		// Act & Assert
+		MvcResult mvcResult = mockMvc.perform(patch("/customers/" + customer.getId() + "/active")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonContent)).andExpect(status().isOk()).andReturn();
+
+		// Assert
+		CustomerDto content = mapper.readValue(mvcResult.getResponse().getContentAsString(), CustomerDto.class);
+
+		Assertions.assertFalse(content.active);
+	}
+
+	@Test
+	void it_can_activate_a_customer() throws Exception {
+		// Arrange
+		Customer customerInactive = new Customer("Customer Aaa", "11111111111", LocalDate.parse("2000-01-01"),
+				"c1@email.com", "11900000000", false);
+		Customer customer = customerRepository.save(customerInactive);
+
+		UpdateCustomerActiveForm customerForm = new UpdateCustomerActiveForm();
+		customerForm.active = true;
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonContent = mapper.writeValueAsString(customerForm);
+
+		// Act & Assert
+		MvcResult mvcResult = mockMvc.perform(patch("/customers/" + customer.getId() + "/active")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonContent)).andExpect(status().isOk()).andReturn();
+
+		// Assert
+		CustomerDto content = mapper.readValue(mvcResult.getResponse().getContentAsString(), CustomerDto.class);
+
+		Assertions.assertTrue(content.active);
+	}
+
 }

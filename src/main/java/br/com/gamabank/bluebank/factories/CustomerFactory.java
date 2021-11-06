@@ -11,14 +11,15 @@ public class CustomerFactory {
 	}
 
 	public static CustomerDto Create(Customer customer) {
-		var dto = new CustomerDto();
+		CustomerDto dto = new CustomerDto();
 
 		dto.id = customer.getId();
 		dto.name = customer.getName();
 		dto.cpfCnpj = customer.getCpfCnpj();
-		dto.birthDate = customer.getBirthDate();
+		dto.birthDate = customer.getBirthDate() != null ? customer.getBirthDate().toString() : null;
 		dto.email = customer.getEmail();
 		dto.phone = customer.getPhone();
+		dto.active = customer.isActive();
 
 		return dto;
 	}

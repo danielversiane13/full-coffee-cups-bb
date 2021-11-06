@@ -1,27 +1,22 @@
 package br.com.gamabank.bluebank.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.gamabank.bluebank.dto.BankAccountDto;
-import br.com.gamabank.bluebank.dto.CustomerDto;
 import br.com.gamabank.bluebank.entities.BankAccount;
-import br.com.gamabank.bluebank.entities.Customer;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.exceptions.NotFoundException;
 import br.com.gamabank.bluebank.factories.BankAccountFactory;
-import br.com.gamabank.bluebank.factories.CustomerFactory;
 import br.com.gamabank.bluebank.forms.BankAccountForm;
-import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateBankAccountActiveForm;
 import br.com.gamabank.bluebank.repositories.BankAccountRepository;
 import br.com.gamabank.bluebank.repositories.CustomerRepository;
-import br.com.gamabank.bluebank.utils.PageableUtil;
 
 @Service
 public class BankAccountService {
@@ -54,6 +49,19 @@ public class BankAccountService {
 		
 		BankAccount bankAccount = BankAccountFactory.Create(form, customer);
 		
+		repository.save(bankAccount);
+
+		return BankAccountFactory.Create(bankAccount);
+		
+	}
+	
+	public BankAccountDto updateActive(UpdateBankAccountActiveForm form, UUID id) throws ExceptionHandler {
+		
+		BankAccount bankAccount = repository.findById(id).orElseThrow(() -> new NotFoundException("Account not found"));
+
+		bankAccount.setActive(form.active);
+		bankAccount.setUpdatedAt(LocalDateTime.now());
+
 		repository.save(bankAccount);
 
 		return BankAccountFactory.Create(bankAccount);

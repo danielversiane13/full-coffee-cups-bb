@@ -2,12 +2,9 @@ package br.com.gamabank.bluebank.forms;
 
 import javax.validation.constraints.NotNull;
 
-public class BankAccountForm {
+public class UpdateBankAccountActiveForm {
 
 	@NotNull
-	public String account;
-	
-	@NotNull
-	public Double balance;
+	public boolean active;
 	
 }

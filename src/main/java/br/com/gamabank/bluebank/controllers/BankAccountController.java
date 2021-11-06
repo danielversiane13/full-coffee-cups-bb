@@ -1,6 +1,7 @@
 package br.com.gamabank.bluebank.controllers;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -18,16 +19,12 @@ import br.com.gamabank.bluebank.dto.BankAccountDto;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.forms.BankAccountForm;
 import br.com.gamabank.bluebank.services.BankAccountService;
-import br.com.gamabank.bluebank.services.CustomerService;
 
 @RestController
 public class BankAccountController {
 
 	@Autowired
 	private BankAccountService service;
-	
-	@Autowired
-	private CustomerService customerService;
 	
 	@GetMapping(value = "/bank-accounts/{id}")
 	public ResponseEntity<BankAccountDto> findById(@PathVariable UUID id) throws ExceptionHandler {
@@ -36,8 +33,8 @@ public class BankAccountController {
 	}
 
 	@GetMapping(value = "/customers/{customerId}/bank-accounts")
-	public ResponseEntity<BankAccountDto> findAll(@PathVariable UUID customerId) throws ExceptionHandler {
-		var dto = service.findById(customerId);
+	public ResponseEntity<List<BankAccountDto>> findAllByCustomerId(@PathVariable UUID customerId) throws ExceptionHandler {
+		var dto = service.findAllByCustomer(customerId);
 		return ResponseEntity.ok(dto);
 	}
 	

@@ -1,6 +1,8 @@
 package br.com.gamabank.bluebank.services;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,13 +32,13 @@ public class BankAccountService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	public Page<BankAccountDto> findAll(Pageable pageable) {
+	public List<BankAccountDto> findAllByCustomer (UUID customerId) throws ExceptionHandler {
 		
-		Pageable _pageable = PageableUtil.pageRequest(pageable);
-
-		return repository.findAll(_pageable).map(BankAccountFactory::Create);
+		var customer = customerRepository.findById(customerId).orElseThrow(() -> new NotFoundException("Customer not found"));
+		
+		return repository.findAllByCustomer(customer).stream().map(BankAccountFactory::Create).collect(Collectors.toList());
+		
 	}
-	
 	
 	public BankAccountDto findById(UUID id) throws ExceptionHandler {
 		

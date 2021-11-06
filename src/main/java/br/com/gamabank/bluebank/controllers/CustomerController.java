@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.dto.CustomerDto;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.services.CustomerService;
@@ -60,6 +62,13 @@ public class CustomerController {
 	public ResponseEntity<Void> destroy(@PathVariable UUID customerId) throws ExceptionHandler {
 		service.deleteById(customerId);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PatchMapping(value = "/{customerId}/active")
+	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId,
+			@RequestBody @Valid UpdateCustomerActiveForm form) throws ExceptionHandler {
+		var dto = service.updateActive(form, customerId);
+		return ResponseEntity.ok(dto);
 	}
 
 }

@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.gamabank.bluebank.forms.CustomerForm;
-import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
+import br.com.gamabank.bluebank.dto.AddressDto;
 import br.com.gamabank.bluebank.dto.CustomerDto;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
+import br.com.gamabank.bluebank.forms.AddressForm;
+import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.services.CustomerService;
 
 @RestController
@@ -68,6 +70,27 @@ public class CustomerController {
 	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId,
 			@RequestBody @Valid UpdateCustomerActiveForm form) throws ExceptionHandler {
 		var dto = service.updateActive(form, customerId);
+		return ResponseEntity.ok(dto);
+	}
+
+	@GetMapping("/{customerId}/address")
+	public ResponseEntity<AddressDto> findAddress(@PathVariable UUID customerId) throws ExceptionHandler {
+		var dto = service.findAddress(customerId);
+		return ResponseEntity.ok(dto);
+	}
+
+	@PostMapping("/{customerId}/address")
+	public ResponseEntity<AddressDto> createAddress(@PathVariable UUID customerId, @RequestBody @Valid AddressForm form,
+			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
+		var dto = service.createAddress(customerId, form);
+		URI uri = uriBuilder.path("/customers/{customerId}/address").buildAndExpand(dto.id).toUri();
+		return ResponseEntity.created(uri).body(dto);
+	}
+
+	@PutMapping("/{customerId}/address")
+	public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID customerId, @RequestBody @Valid AddressForm form)
+			throws ExceptionHandler {
+		var dto = service.updateAddress(customerId, form);
 		return ResponseEntity.ok(dto);
 	}
 

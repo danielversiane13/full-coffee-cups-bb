@@ -41,6 +41,5 @@ public class AddressesController {
 	public ResponseEntity<AddressDto> put(){
 		return new ResponseEntity<AddressDto>(HttpStatus.OK);
 	}
-
 }
 

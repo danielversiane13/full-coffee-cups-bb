@@ -16,35 +16,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.gamabank.bluebank.dto.BalanceTransferDto;
+import br.com.gamabank.bluebank.dto.BalanceMovementDto;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
-import br.com.gamabank.bluebank.forms.BalanceTransferForm;
-import br.com.gamabank.bluebank.services.BalanceTransferService;
+import br.com.gamabank.bluebank.forms.BalanceMovementForm;
+import br.com.gamabank.bluebank.services.BalanceMovementService;
 
 @RestController
-public class BalanceTransferController {
+public class BalanceMovementController {
 
 	@Autowired
-	private BalanceTransferService service;
+	private BalanceMovementService service;
 
 	@GetMapping(value = "/bank-accounts/{bankAccountId}/balance-transfer")
-	public ResponseEntity<Page<BalanceTransferDto>> findByFromBankAccountId(Pageable pageable,
+	public ResponseEntity<Page<BalanceMovementDto>> findByFromBankAccountIdOrToBankAccountId(Pageable pageable,
 			@PathVariable UUID bankAccountId) {
-		return ResponseEntity.ok(service.findByFromBankAccountId(pageable, bankAccountId));
+		return ResponseEntity.ok(service.findByFromBankAccountIdOrToBankAccountId(pageable, bankAccountId));
 	}
 
 	@GetMapping(value = "/balance-transfer/{balanceTransferId}")
-	public ResponseEntity<BalanceTransferDto> findById(@PathVariable UUID balanceTransferId) throws ExceptionHandler {
+	public ResponseEntity<BalanceMovementDto> findById(@PathVariable UUID balanceTransferId) throws ExceptionHandler {
 		var dto = service.findById(balanceTransferId);
 		return ResponseEntity.ok(dto);
 	}
 
 	@PostMapping(value = "/balance-transfer")
-	public ResponseEntity<BalanceTransferDto> add(@RequestBody @Valid BalanceTransferForm form,
+	public ResponseEntity<BalanceMovementDto> add(@RequestBody @Valid BalanceMovementForm form,
 			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.create(form);
-		URI uri = uriBuilder.path("/customers/{customerId}/bank-accounts/balance-transfer").buildAndExpand(dto.id)
-				.toUri();
+		URI uri = uriBuilder.path("/balance-transfer/{balanceTransferId}").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 

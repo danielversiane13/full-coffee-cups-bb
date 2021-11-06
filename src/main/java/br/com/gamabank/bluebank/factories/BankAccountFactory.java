@@ -19,7 +19,6 @@ public class BankAccountFactory {
 		dto.id = bankAccount.getId();
 		dto.account = bankAccount.getAccount();
 		dto.balance = bankAccount.getBalance();
-		dto.customer = bankAccount.getCustomer();
 
 		return dto;
 	}

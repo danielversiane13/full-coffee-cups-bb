@@ -7,11 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.gamabank.bluebank.entities.BalanceTransfer;
+import br.com.gamabank.bluebank.entities.BalanceMovement;
 
 @Repository
-public interface BalanceTransferRepository extends JpaRepository<BalanceTransfer, UUID> {
+public interface BalanceMovementRepository extends JpaRepository<BalanceMovement, UUID> {
 
-	public Page<BalanceTransfer> findByFromBankAccountId(Pageable _pageable, UUID id);
+	public Page<BalanceMovement> findByFromBankAccountIdOrToBankAccountId(Pageable _pageable, UUID fromBankAccountId,
+			UUID toBankAccountId);
 
 }

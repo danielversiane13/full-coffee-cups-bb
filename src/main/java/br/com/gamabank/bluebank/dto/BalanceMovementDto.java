@@ -5,12 +5,12 @@ import java.util.UUID;
 
 import br.com.gamabank.bluebank.entities.BankAccount;
 
-public class BalanceTransferDto {
+public class BalanceMovementDto {
 
 	public UUID id;
-	public BankAccount fromBankAccount;
 	public BankAccount toBankAccount;
+	public BankAccount fromBankAccount;
 	public double value;
-	public LocalDateTime movementedAt;
+	public LocalDateTime createdAt;
 
 }

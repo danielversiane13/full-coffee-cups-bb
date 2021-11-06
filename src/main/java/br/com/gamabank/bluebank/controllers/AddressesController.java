@@ -1,5 +1,6 @@
 package br.com.gamabank.bluebank.controllers;
 
+import java.awt.print.Pageable;
 import java.net.URI;
 import java.util.UUID;
 
@@ -25,13 +26,13 @@ import br.com.gamabank.bluebank.services.AddressService;
 @RestController
 @RequestMapping("/customers/{customer_id}/address")
 public class AddressesController {
+	
 	@Autowired
 	private AddressService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<AddressDto>> findById(@PathVariable UUID customer_Id) throws ExceptionHandler{ 
-		var dto = service.findAll(customer_Id);
-		return ResponseEntity.ok(dto);
+	public ResponseEntity<Page<AddressDto>> findById(Pageable pageable){ 
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 	
 	@PostMapping

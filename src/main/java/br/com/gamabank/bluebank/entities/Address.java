@@ -1,38 +1,44 @@
 package br.com.gamabank.bluebank.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Address extends SuperEntity {
 
 	private String street;
+	private String number;
+	private String neighborhood;
+	private String complement;
+	private String zipcode;
 	private String city;
 	private String state;
 	private String country;
-	private String number;
-	private String zipcode;
-	private String complement;
-	private String neighborhood;
 
-	@ManyToOne 
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JsonBackReference
+	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	public Address() { 
-		super(); 
+	public Address() {
+		super();
 	}
 
-	public Address(Customer customer, String street, String city, String state, String country, String number, String zipcode, String complement, String neighborhood) {
+	public Address(String street, String number, String neighborhood, String complement, String zipcode, String city,
+			String state, String country) {
 		super();
-		this.customer = customer;
 		this.street = street;
+		this.number = number;
+		this.neighborhood = neighborhood;
+		this.complement = complement;
+		this.zipcode = zipcode;
 		this.city = city;
 		this.state = state;
 		this.country = country;
-		this.zipcode = zipcode;
-		this.number = number;
-		this.complement = complement;
-		this.neighborhood = neighborhood;
 	}
 
 	public String getStreet() {
@@ -41,6 +47,38 @@ public class Address extends SuperEntity {
 
 	public void setStreet(String street) {
 		this.street = street;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
+	}
+
+	public String getComplement() {
+		return complement;
+	}
+
+	public void setComplement(String complement) {
+		this.complement = complement;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public String getCity() {
@@ -65,38 +103,6 @@ public class Address extends SuperEntity {
 
 	public void setCountry(String country) {
 		this.country = country;
-	}
-
-	public String getZipcode() {
-		return zipcode;
-	}
-
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
-	public String getNeighborhood() {
-		return neighborhood;
-	}
-
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
 	}
 
 	public Customer getCustomer() {

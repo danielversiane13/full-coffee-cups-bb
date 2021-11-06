@@ -10,6 +10,7 @@ public class Address extends SuperEntity {
 	public String city;
 	public String state;
 	public String country;
+	public String number;
 	public String zipcode;
 	public String complement;
 	public String neighborhood;
@@ -21,13 +22,13 @@ public class Address extends SuperEntity {
 		super(); 
 	}
 
-	public Address(Customer customer, String street, String city, String state, String country, String zipcode,String complement, String neighborhood) {
+	public Address(String street, String city, String state, String country, String number,String zipcode,String complement, String neighborhood) {
 		super();
-		this.customer = customer;
 		this.street = street;
 		this.city = city;
 		this.state = state;
 		this.country = country;
+		this.number = number;
 		this.zipcode = zipcode;
 		this.complement = complement;
 		this.neighborhood = neighborhood;
@@ -64,6 +65,14 @@ public class Address extends SuperEntity {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+	
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
 	public String getZipcode() {
 		return zipcode;
@@ -88,13 +97,4 @@ public class Address extends SuperEntity {
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
 	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
 }

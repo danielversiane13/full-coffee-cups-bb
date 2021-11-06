@@ -2,19 +2,25 @@ package br.com.gamabank.bluebank.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class BankAccount extends SuperEntity {
 
-	@Column(length=30, nullable=false)
+	@Column(length = 30, nullable = false)
 	private String account;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Double balance;
-	
-	@ManyToOne 
+
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JsonBackReference
+	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
-	
+
 	public BankAccount() {
 		super();
 	}
@@ -25,7 +31,7 @@ public class BankAccount extends SuperEntity {
 		this.balance = balance;
 		this.customer = customer;
 	}
-	
+
 	public String getAccount() {
 		return account;
 	}
@@ -38,8 +44,12 @@ public class BankAccount extends SuperEntity {
 		return balance;
 	}
 
-	public void setBalance(Double balance) {
-		this.balance = balance;
+	public void balanceDeposit(Double value) {
+		this.balance += value;
+	}
+
+	public void balanceWithdraw(Double value) {
+		this.balance -= value;
 	}
 
 	public Customer getCustomer() {
@@ -49,5 +59,5 @@ public class BankAccount extends SuperEntity {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
 }

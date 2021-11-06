@@ -2,7 +2,12 @@ package br.com.gamabank.bluebank.entities;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Customer extends SuperEntity {
@@ -12,6 +17,10 @@ public class Customer extends SuperEntity {
 	private LocalDate birthDate;
 	private String email;
 	private String phone;
+
+	@JsonManagedReference
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
+	private BankAccount bankAccount;
 
 	public Customer() {
 		super();
@@ -74,6 +83,14 @@ public class Customer extends SuperEntity {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public BankAccount getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 
 }

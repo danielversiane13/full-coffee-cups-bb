@@ -18,6 +18,7 @@ import br.com.gamabank.bluebank.factories.CustomerFactory;
 import br.com.gamabank.bluebank.forms.BankAccountForm;
 import br.com.gamabank.bluebank.forms.CustomerForm;
 import br.com.gamabank.bluebank.repositories.BankAccountRepository;
+import br.com.gamabank.bluebank.repositories.CustomerRepository;
 import br.com.gamabank.bluebank.utils.PageableUtil;
 
 @Service
@@ -25,6 +26,9 @@ public class BankAccountService {
 
 	@Autowired
 	private BankAccountRepository repository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 	
 	public Page<BankAccountDto> findAll(Pageable pageable) {
 		
@@ -42,9 +46,11 @@ public class BankAccountService {
 		
 	}
 	
-	public BankAccountDto create(BankAccountForm form) {
+	public BankAccountDto create(BankAccountForm form, UUID customerId) throws ExceptionHandler {
 		
-		BankAccount bankAccount = BankAccountFactory.Create(form);
+		var customer = customerRepository.findById(customerId).orElseThrow(() -> new NotFoundException("Customer not found"));
+		
+		BankAccount bankAccount = BankAccountFactory.Create(form, customer);
 		
 		repository.save(bankAccount);
 

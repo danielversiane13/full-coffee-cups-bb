@@ -22,7 +22,7 @@ public class Customer extends SuperEntity {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
 	private BankAccount bankAccount;
 
-  @JsonManagedReference
+	@JsonManagedReference
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
 	private Address address;
 
@@ -95,7 +95,8 @@ public class Customer extends SuperEntity {
 
 	public void setBankAccount(BankAccount bankAccount) {
 		this.bankAccount = bankAccount;
-    
+	}
+
 	public Address getAddress() {
 		return address;
 	}

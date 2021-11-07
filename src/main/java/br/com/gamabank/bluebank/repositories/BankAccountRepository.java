@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import br.com.gamabank.bluebank.entities.BankAccount;
 import br.com.gamabank.bluebank.entities.Customer;
 
-@Repository 
+@Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, UUID> {
 
-	List<BankAccount> findAllByCustomer (Customer customer);
+	List<BankAccount> findAllByCustomer(Customer customer);
 
 }

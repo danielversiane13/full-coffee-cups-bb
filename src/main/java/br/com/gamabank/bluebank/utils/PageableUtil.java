@@ -8,10 +8,14 @@ public class PageableUtil {
 	static int PAGE_MAX_SIZE = 20;
 
 	public static Pageable pageRequest(Pageable pageable) {
+		return PageableUtil.pageRequest(pageable, PAGE_MAX_SIZE);
+	}
+
+	public static Pageable pageRequest(Pageable pageable, int pageMaxSize) {
 		int size = pageable.getPageSize();
 
-		if (size > PAGE_MAX_SIZE || size < 0) {
-			size = PAGE_MAX_SIZE;
+		if (size > pageMaxSize || size < 0) {
+			size = pageMaxSize;
 		}
 
 		return PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());

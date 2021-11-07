@@ -8,5 +8,5 @@ public class BankAccountDto {
 	public String account;
 	public Double balance;
 	public boolean active;
-	
+
 }

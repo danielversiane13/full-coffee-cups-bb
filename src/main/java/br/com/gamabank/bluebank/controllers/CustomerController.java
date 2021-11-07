@@ -96,8 +96,6 @@ public class CustomerController {
 		var dto = service.updateAddress(customerId, form);
 		return ResponseEntity.ok(dto);
 	}
-	
-	// Bank Account Controller
 
 	@GetMapping("/{customerId}/bank-accounts")
 	public ResponseEntity<BankAccountDto> findBankAccount(@PathVariable UUID customerId) throws ExceptionHandler {
@@ -106,20 +104,20 @@ public class CustomerController {
 	}
 
 	@PostMapping("/{customerId}/bank-accounts")
-	public ResponseEntity<BankAccountDto> createBankAccount(@PathVariable UUID customerId, @RequestBody @Valid BankAccountForm form,
-			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
+	public ResponseEntity<BankAccountDto> createBankAccount(@PathVariable UUID customerId,
+			@RequestBody @Valid BankAccountForm form, UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.createBankAccount(customerId, form);
 		URI uri = uriBuilder.path("/customers/{customerId}/bank-account").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@PutMapping("/{customerId}/bank-accounts")
-	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable UUID customerId, @RequestBody @Valid BankAccountForm form)
-			throws ExceptionHandler {
+	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable UUID customerId,
+			@RequestBody @Valid BankAccountForm form) throws ExceptionHandler {
 		var dto = service.updateBankAccount(customerId, form);
 		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PatchMapping(value = "/{customerId}/bank-accounts/active")
 	public ResponseEntity<BankAccountDto> update(@PathVariable UUID customerId,
 			@RequestBody @Valid UpdateBankAccountActiveForm form) throws ExceptionHandler {

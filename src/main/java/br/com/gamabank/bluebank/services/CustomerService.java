@@ -149,9 +149,7 @@ public class CustomerService {
 
 		return AddressFactory.Create(address);
 	}
-	
-	// Bank Account Service
-	
+
 	public BankAccountDto findBankAccount(UUID customerId) throws ExceptionHandler {
 		Customer customer = repository.findById(customerId)
 				.orElseThrow(() -> new NotFoundException("Customer not found"));
@@ -172,7 +170,7 @@ public class CustomerService {
 		var hasBankAccount = customer.getBankAccount();
 
 		if (hasBankAccount != null) {
-			throw new NotAcceptableException("Customer already has an BankAccount");
+			throw new NotAcceptableException("Customer already has a BankAccount");
 		}
 
 		BankAccount bankAccount = BankAccountFactory.Create(form);
@@ -215,13 +213,13 @@ public class CustomerService {
 		if (!form.active && bankAccount.getBalance() != 0) {
 			throw new NotAcceptableException("It is not possible to inactivate a bank account with a balance");
 		}
-		
+
 		bankAccount.setActive(form.active);
 		bankAccount.setUpdatedAt(LocalDateTime.now());
 
 		bankAccountRepository.save(bankAccount);
 
 		return BankAccountFactory.Create(bankAccount);
-		
+
 	}
 }

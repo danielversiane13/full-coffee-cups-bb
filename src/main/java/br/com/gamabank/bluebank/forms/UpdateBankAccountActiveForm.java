@@ -6,5 +6,5 @@ public class UpdateBankAccountActiveForm {
 
 	@NotNull
 	public boolean active;
-	
+
 }

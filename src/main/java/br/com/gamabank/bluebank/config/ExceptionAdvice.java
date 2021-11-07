@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.gamabank.bluebank.dto.ExceptionHandlerDto;
+import br.com.gamabank.bluebank.dto.ValidationDto;
 import br.com.gamabank.bluebank.exceptions.BadRequestException;
 import br.com.gamabank.bluebank.exceptions.NotAcceptableException;
 import br.com.gamabank.bluebank.exceptions.NotFoundException;
 import br.com.gamabank.bluebank.factories.ExceptionHandlerFactory;
-import br.com.gamabank.bluebank.dto.ValidationDto;
 import br.com.gamabank.bluebank.factories.ValidationDtoFactory;
 
 @RestControllerAdvice

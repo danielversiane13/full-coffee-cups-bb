@@ -11,16 +11,17 @@ public class BalanceMovement extends SuperEntity {
 
 	@ManyToOne
 	private BankAccount fromBankAccount;
-	
+
 	private double value;
-	
+
 	private OperationTypeEnum operationType;
 
 	public BalanceMovement() {
 		super();
 	}
 
-	public BalanceMovement(BankAccount toBankAccount, BankAccount fromBankAccount, double value, OperationTypeEnum operationType) {
+	public BalanceMovement(BankAccount toBankAccount, BankAccount fromBankAccount, double value,
+			OperationTypeEnum operationType) {
 		super();
 		this.toBankAccount = toBankAccount;
 		this.fromBankAccount = fromBankAccount;
@@ -32,7 +33,7 @@ public class BalanceMovement extends SuperEntity {
 		super();
 		this.value = value;
 	}
-	
+
 	public BankAccount getFromBankAccount() {
 		return fromBankAccount;
 	}
@@ -64,5 +65,5 @@ public class BalanceMovement extends SuperEntity {
 	public void setOperationType(OperationTypeEnum operationType) {
 		this.operationType = operationType;
 	}
-	
+
 }

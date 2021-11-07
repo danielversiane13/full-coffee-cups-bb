@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.gamabank.bluebank.dto.BalanceMovementDto;
@@ -19,7 +17,6 @@ import br.com.gamabank.bluebank.factories.BalanceMovementFactory;
 import br.com.gamabank.bluebank.forms.BalanceMovementForm;
 import br.com.gamabank.bluebank.repositories.BalanceMovementRepository;
 import br.com.gamabank.bluebank.repositories.BankAccountRepository;
-import br.com.gamabank.bluebank.utils.PageableUtil;
 
 @Service
 public class BalanceMovementService {
@@ -29,13 +26,6 @@ public class BalanceMovementService {
 
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
-
-	public Page<BalanceMovementDto> findByFromBankAccountIdOrToBankAccountId(Pageable pageable, UUID bankAccountId) {
-		Pageable _pageable = PageableUtil.pageRequest(pageable);
-
-		return repository.findByFromBankAccountIdOrToBankAccountId(_pageable, bankAccountId, bankAccountId)
-				.map(BalanceMovementFactory::Create);
-	}
 
 	public BalanceMovementDto findById(UUID id) throws ExceptionHandler {
 		BalanceMovement balanceMovement = repository.findById(id)
@@ -50,8 +40,8 @@ public class BalanceMovementService {
 
 		if (!hasToAccount && !hasFromAccount) {
 			throw new NotAcceptableException("Invalid operation");
-		} 
-		
+		}
+
 		BalanceMovement balanceMovement = BalanceMovementFactory.Create(form);
 
 		if (!hasFromAccount) {

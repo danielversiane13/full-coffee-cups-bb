@@ -27,6 +27,7 @@ import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.forms.AddressForm;
 import br.com.gamabank.bluebank.forms.BankAccountForm;
 import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateBankAccountActiveForm;
 import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.services.CustomerService;
 
@@ -116,6 +117,13 @@ public class CustomerController {
 	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable UUID customerId, @RequestBody @Valid BankAccountForm form)
 			throws ExceptionHandler {
 		var dto = service.updateBankAccount(customerId, form);
+		return ResponseEntity.ok(dto);
+	}
+	
+	@PatchMapping(value = "/{customerId}/bank-accounts/active")
+	public ResponseEntity<BankAccountDto> update(@PathVariable UUID customerId,
+			@RequestBody @Valid UpdateBankAccountActiveForm form) throws ExceptionHandler {
+		var dto = service.updateBankAccountActive(form, customerId);
 		return ResponseEntity.ok(dto);
 	}
 

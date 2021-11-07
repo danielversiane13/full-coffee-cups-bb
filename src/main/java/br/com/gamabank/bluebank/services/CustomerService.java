@@ -23,6 +23,7 @@ import br.com.gamabank.bluebank.factories.CustomerFactory;
 import br.com.gamabank.bluebank.forms.AddressForm;
 import br.com.gamabank.bluebank.forms.BankAccountForm;
 import br.com.gamabank.bluebank.forms.CustomerForm;
+import br.com.gamabank.bluebank.forms.UpdateBankAccountActiveForm;
 import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.repositories.AddressRepository;
 import br.com.gamabank.bluebank.repositories.BankAccountRepository;
@@ -158,7 +159,7 @@ public class CustomerService {
 		var bankAccount = customer.getBankAccount();
 
 		if (bankAccount == null) {
-			throw new NotFoundException("BankAccount not found");
+			throw new NotFoundException("Bank Account not found");
 		}
 
 		return BankAccountFactory.Create(bankAccount);
@@ -191,7 +192,7 @@ public class CustomerService {
 		var bankAccount = customer.getBankAccount();
 
 		if (bankAccount == null) {
-			throw new NotFoundException("BankAccount not found");
+			throw new NotFoundException("Bank Account not found");
 		}
 
 		bankAccount.setAccount(form.account);
@@ -202,4 +203,25 @@ public class CustomerService {
 		return BankAccountFactory.Create(bankAccount);
 	}
 
+	public BankAccountDto updateBankAccountActive(UpdateBankAccountActiveForm form, UUID id) throws ExceptionHandler {
+		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
+
+		var bankAccount = customer.getBankAccount();
+
+		if (bankAccount == null) {
+			throw new NotFoundException("Bank Account not found");
+		}
+
+		if (!form.active && bankAccount.getBalance() != 0) {
+			throw new NotAcceptableException("It is not possible to inactivate a bank account with a balance");
+		}
+		
+		bankAccount.setActive(form.active);
+		bankAccount.setUpdatedAt(LocalDateTime.now());
+
+		bankAccountRepository.save(bankAccount);
+
+		return BankAccountFactory.Create(bankAccount);
+		
+	}
 }

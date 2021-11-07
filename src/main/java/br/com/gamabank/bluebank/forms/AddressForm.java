@@ -18,7 +18,7 @@ public class AddressForm {
 
 	@NotBlank
 	@Size(min = 8, max = 8)
-	public String zipcosde;
+	public String zipcode;
 
 	@NotBlank
 	public String city;

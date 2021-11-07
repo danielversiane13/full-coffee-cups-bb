@@ -45,60 +45,90 @@ public class BalanceMovementService {
 		BalanceMovement balanceMovement = BalanceMovementFactory.Create(form);
 
 		if (!hasFromAccount) {
-			BankAccount toBankAccount = bankAccountRepository.findById(form.toBankAccountId)
-					.orElseThrow(() -> new NotFoundException("To BankAccount not found"));
-
-			balanceMovement.setOperationType(OperationTypeEnum.DEPOSIT);
-			balanceMovement.setToBankAccount(toBankAccount);
-
-			toBankAccount.balanceDeposit(form.value);
-			toBankAccount.setUpdatedAt(LocalDateTime.now());
-
-			bankAccountRepository.save(toBankAccount);
-
+			this.operationDeposit(balanceMovement, form);
 		} else if (!hasToAccount) {
-			BankAccount fromBankAccount = bankAccountRepository.findById(form.fromBankAccountId)
-					.orElseThrow(() -> new NotFoundException("From BankAccount not found"));
-
-			balanceMovement.setOperationType(OperationTypeEnum.WITHDRAW);
-			balanceMovement.setFromBankAccount(fromBankAccount);
-
-			if (fromBankAccount.getBalance() < form.value) {
-				throw new NotAcceptableException("Insufficient balance");
-			}
-			fromBankAccount.balanceWithdraw(form.value);
-			fromBankAccount.setUpdatedAt(LocalDateTime.now());
-
-			bankAccountRepository.save(fromBankAccount);
-
+			this.operationWithdraw(balanceMovement, form);
 		} else {
-			if (form.toBankAccountId.equals(form.fromBankAccountId)) {
-				throw new NotAcceptableException("Invalid operation");
-			}
-			BankAccount toBankAccount = bankAccountRepository.findById(form.toBankAccountId)
-					.orElseThrow(() -> new NotFoundException("To BankAccount not found"));
-			BankAccount fromBankAccount = bankAccountRepository.findById(form.fromBankAccountId)
-					.orElseThrow(() -> new NotFoundException("From BankAccount not found"));
-
-			balanceMovement.setOperationType(OperationTypeEnum.TRANSFER);
-			balanceMovement.setToBankAccount(toBankAccount);
-			balanceMovement.setFromBankAccount(fromBankAccount);
-
-			if (fromBankAccount.getBalance() < form.value) {
-				throw new NotAcceptableException("Insufficient balance");
-			}
-			fromBankAccount.balanceWithdraw(form.value);
-			fromBankAccount.setUpdatedAt(LocalDateTime.now());
-			toBankAccount.balanceDeposit(form.value);
-			toBankAccount.setUpdatedAt(LocalDateTime.now());
-
-			bankAccountRepository.save(toBankAccount);
-			bankAccountRepository.save(fromBankAccount);
+			this.operationTransfer(balanceMovement, form);
 		}
 
 		repository.save(balanceMovement);
 
 		return BalanceMovementFactory.Create(balanceMovement);
+	}
+
+	private void operationDeposit(BalanceMovement balanceMovement, BalanceMovementForm form) throws ExceptionHandler {
+		BankAccount toBankAccount = bankAccountRepository.findById(form.toBankAccountId)
+				.orElseThrow(() -> new NotFoundException("To BankAccount not found"));
+
+		if (toBankAccount.isActive() == false) {
+			throw new NotAcceptableException("To BankAccount is inactive");
+		}
+
+		balanceMovement.setOperationType(OperationTypeEnum.DEPOSIT);
+		balanceMovement.setToBankAccount(toBankAccount);
+
+		toBankAccount.balanceDeposit(form.value);
+		toBankAccount.setUpdatedAt(LocalDateTime.now());
+
+		bankAccountRepository.save(toBankAccount);
+	}
+
+	private void operationWithdraw(BalanceMovement balanceMovement, BalanceMovementForm form) throws ExceptionHandler {
+
+		BankAccount fromBankAccount = bankAccountRepository.findById(form.fromBankAccountId)
+				.orElseThrow(() -> new NotFoundException("From BankAccount not found"));
+
+		if (fromBankAccount.isActive() == false) {
+			throw new NotAcceptableException("From BankAccount is inactive");
+		}
+
+		balanceMovement.setOperationType(OperationTypeEnum.WITHDRAW);
+		balanceMovement.setFromBankAccount(fromBankAccount);
+
+		if (fromBankAccount.getBalance() < form.value) {
+			throw new NotAcceptableException("Insufficient balance");
+		}
+
+		fromBankAccount.balanceWithdraw(form.value);
+		fromBankAccount.setUpdatedAt(LocalDateTime.now());
+
+		bankAccountRepository.save(fromBankAccount);
+	}
+
+	private void operationTransfer(BalanceMovement balanceMovement, BalanceMovementForm form) throws ExceptionHandler {
+		if (form.toBankAccountId.equals(form.fromBankAccountId)) {
+			throw new NotAcceptableException("Invalid operation");
+		}
+
+		BankAccount toBankAccount = bankAccountRepository.findById(form.toBankAccountId)
+				.orElseThrow(() -> new NotFoundException("To BankAccount not found"));
+		if (toBankAccount.isActive() == false) {
+			throw new NotAcceptableException("To BankAccount is inactive");
+		}
+
+		BankAccount fromBankAccount = bankAccountRepository.findById(form.fromBankAccountId)
+				.orElseThrow(() -> new NotFoundException("From BankAccount not found"));
+		if (fromBankAccount.isActive() == false) {
+			throw new NotAcceptableException("From BankAccount is inactive");
+		}
+
+		balanceMovement.setOperationType(OperationTypeEnum.TRANSFER);
+		balanceMovement.setToBankAccount(toBankAccount);
+		balanceMovement.setFromBankAccount(fromBankAccount);
+
+		if (fromBankAccount.getBalance() < form.value) {
+			throw new NotAcceptableException("Insufficient balance");
+		}
+
+		toBankAccount.balanceDeposit(form.value);
+		toBankAccount.setUpdatedAt(LocalDateTime.now());
+
+		fromBankAccount.balanceWithdraw(form.value);
+		fromBankAccount.setUpdatedAt(LocalDateTime.now());
+
+		bankAccountRepository.save(toBankAccount);
+		bankAccountRepository.save(fromBankAccount);
 	}
 
 }

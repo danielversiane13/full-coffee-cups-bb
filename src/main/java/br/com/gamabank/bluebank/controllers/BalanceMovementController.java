@@ -19,6 +19,7 @@ import br.com.gamabank.bluebank.dto.BalanceMovementDto;
 import br.com.gamabank.bluebank.exceptions.ExceptionHandler;
 import br.com.gamabank.bluebank.forms.BalanceMovementForm;
 import br.com.gamabank.bluebank.services.BalanceMovementService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/balance-movements")
@@ -28,12 +29,14 @@ public class BalanceMovementController {
 	private BalanceMovementService service;
 
 	@GetMapping(value = "/{balanceTransferId}")
+	@ApiOperation("Find by id a balance movement")
 	public ResponseEntity<BalanceMovementDto> findById(@PathVariable UUID balanceTransferId) throws ExceptionHandler {
 		var dto = service.findById(balanceTransferId);
 		return ResponseEntity.ok(dto);
 	}
 
 	@PostMapping
+	@ApiOperation("Create a deposit, withdrawal or transfer between accounts")
 	public ResponseEntity<BalanceMovementDto> add(@RequestBody @Valid BalanceMovementForm form,
 			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.create(form);

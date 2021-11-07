@@ -30,6 +30,7 @@ import br.com.gamabank.bluebank.forms.CustomerForm;
 import br.com.gamabank.bluebank.forms.UpdateBankAccountActiveForm;
 import br.com.gamabank.bluebank.forms.UpdateCustomerActiveForm;
 import br.com.gamabank.bluebank.services.CustomerService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/customers")
@@ -39,11 +40,13 @@ public class CustomerController {
 	private CustomerService service;
 
 	@GetMapping
+	@ApiOperation("Find all customers")
 	public ResponseEntity<Page<CustomerDto>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping
+	@ApiOperation("Create a customer")
 	public ResponseEntity<CustomerDto> add(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder) {
 		var dto = service.create(form);
 		URI uri = uriBuilder.path("/customers/{customerId}").buildAndExpand(dto.id).toUri();
@@ -51,12 +54,14 @@ public class CustomerController {
 	}
 
 	@GetMapping(value = "/{customerId}")
+	@ApiOperation("Find customer by id")
 	public ResponseEntity<CustomerDto> findById(@PathVariable UUID customerId) throws ExceptionHandler {
 		var dto = service.findById(customerId);
 		return ResponseEntity.ok(dto);
 	}
 
 	@PutMapping(value = "/{customerId}")
+	@ApiOperation("Update a customer")
 	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId, @RequestBody @Valid CustomerForm form)
 			throws ExceptionHandler {
 		var dto = service.update(form, customerId);
@@ -64,12 +69,14 @@ public class CustomerController {
 	}
 
 	@DeleteMapping(value = "/{customerId}")
+	@ApiOperation("Delete a customer")
 	public ResponseEntity<Void> destroy(@PathVariable UUID customerId) throws ExceptionHandler {
 		service.deleteById(customerId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping(value = "/{customerId}/active")
+	@ApiOperation("Update status active of customer by id")
 	public ResponseEntity<CustomerDto> update(@PathVariable UUID customerId,
 			@RequestBody @Valid UpdateCustomerActiveForm form) throws ExceptionHandler {
 		var dto = service.updateActive(form, customerId);
@@ -77,12 +84,14 @@ public class CustomerController {
 	}
 
 	@GetMapping("/{customerId}/address")
+	@ApiOperation("Find address by customer id")
 	public ResponseEntity<AddressDto> findAddress(@PathVariable UUID customerId) throws ExceptionHandler {
 		var dto = service.findAddress(customerId);
 		return ResponseEntity.ok(dto);
 	}
 
 	@PostMapping("/{customerId}/address")
+	@ApiOperation("Create an address by customer id")
 	public ResponseEntity<AddressDto> createAddress(@PathVariable UUID customerId, @RequestBody @Valid AddressForm form,
 			UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.createAddress(customerId, form);
@@ -91,6 +100,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("/{customerId}/address")
+	@ApiOperation("Update an address by customer id")
 	public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID customerId, @RequestBody @Valid AddressForm form)
 			throws ExceptionHandler {
 		var dto = service.updateAddress(customerId, form);
@@ -98,12 +108,14 @@ public class CustomerController {
 	}
 
 	@GetMapping("/{customerId}/bank-accounts")
+	@ApiOperation("Find bank account by customer id")
 	public ResponseEntity<BankAccountDto> findBankAccount(@PathVariable UUID customerId) throws ExceptionHandler {
 		var dto = service.findBankAccount(customerId);
 		return ResponseEntity.ok(dto);
 	}
 
 	@PostMapping("/{customerId}/bank-accounts")
+	@ApiOperation("Create a bank account by customer id")
 	public ResponseEntity<BankAccountDto> createBankAccount(@PathVariable UUID customerId,
 			@RequestBody @Valid BankAccountForm form, UriComponentsBuilder uriBuilder) throws ExceptionHandler {
 		var dto = service.createBankAccount(customerId, form);
@@ -119,6 +131,7 @@ public class CustomerController {
 	}
 
 	@PatchMapping(value = "/{customerId}/bank-accounts/active")
+	@ApiOperation("Update status active of bank account by customer id")
 	public ResponseEntity<BankAccountDto> update(@PathVariable UUID customerId,
 			@RequestBody @Valid UpdateBankAccountActiveForm form) throws ExceptionHandler {
 		var dto = service.updateBankAccountActive(form, customerId);

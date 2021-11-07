@@ -47,7 +47,8 @@ public class CustomerController {
 
 	@PostMapping
 	@ApiOperation("Create a customer")
-	public ResponseEntity<CustomerDto> add(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CustomerDto> add(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder)
+			throws ExceptionHandler {
 		var dto = service.create(form);
 		URI uri = uriBuilder.path("/customers/{customerId}").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);

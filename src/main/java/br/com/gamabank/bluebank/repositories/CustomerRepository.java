@@ -9,5 +9,7 @@ import br.com.gamabank.bluebank.entities.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
-	//
+
+	public Customer findOneByCpfCnpj(String cpfCnpj);
+
 }

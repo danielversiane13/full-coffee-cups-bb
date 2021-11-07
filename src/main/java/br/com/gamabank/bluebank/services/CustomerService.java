@@ -54,8 +54,14 @@ public class CustomerService {
 		return CustomerFactory.Create(customer);
 	}
 
-	public CustomerDto create(CustomerForm form) {
+	public CustomerDto create(CustomerForm form) throws ExceptionHandler {
 		Customer customer = CustomerFactory.Create(form);
+
+		var exitsCpfOrCnpj = repository.findOneByCpfCnpj(customer.getCpfCnpj());
+		if (exitsCpfOrCnpj != null) {
+			throw new NotAcceptableException("This cpf or cnpj already exists a register");
+		}
+
 		repository.save(customer);
 
 		return CustomerFactory.Create(customer);

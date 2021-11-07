@@ -64,12 +64,7 @@ public class CustomerService {
 	public CustomerDto update(CustomerForm form, UUID id) throws ExceptionHandler {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
-		customer.setName(form.name);
-		customer.setCpfCnpj(form.cpfCnpj);
-		customer.setBirthDate(form.birthDate);
-		customer.setEmail(form.email);
-		customer.setPhone(form.phone);
-		customer.setUpdatedAt(LocalDateTime.now());
+		customer = CustomerFactory.Update(customer, form);
 
 		repository.save(customer);
 

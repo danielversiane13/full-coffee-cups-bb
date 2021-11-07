@@ -167,8 +167,12 @@ public class CustomerService {
 		Customer customer = repository.findById(customerId)
 				.orElseThrow(() -> new NotFoundException("Customer not found"));
 
-		var hasBankAccount = customer.getBankAccount();
+		var existsAccount = bankAccountRepository.findOneByAccount(form.account);
+		if (existsAccount != null) {
+			throw new NotAcceptableException("This account already exists");
+		}
 
+		var hasBankAccount = customer.getBankAccount();
 		if (hasBankAccount != null) {
 			throw new NotAcceptableException("Customer already has a BankAccount");
 		}

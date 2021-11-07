@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.gamabank.bluebank.entities.Address;
 import br.com.gamabank.bluebank.entities.BankAccount;
 import br.com.gamabank.bluebank.entities.Customer;
-import br.com.gamabank.bluebank.repositories.BankAccountRepository;
 import br.com.gamabank.bluebank.repositories.CustomerRepository;
 
 @SpringBootApplication
@@ -19,9 +18,6 @@ public class BluebankApplication implements CommandLineRunner {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-
-	@Autowired
-	private BankAccountRepository bankAccountRepository;
 
 	@Value("${bluebank.app.env}")
 	private String APP_ENV;
@@ -40,21 +36,24 @@ public class BluebankApplication implements CommandLineRunner {
 				"agatha@email.com", "11997431482");
 		Address addressA = new Address("Rua Raimundo Macedo Melo", "832", "Santana", null, "55645706", "Gravatá", "PE",
 				"Brasil");
-		BankAccount bankAccountA = new BankAccount("123", 546564.67, customerA);
+		BankAccount bankAccountA = new BankAccount("123");
 		customerA.setAddress(addressA);
+		customerA.setBankAccount(bankAccountA);
 		addressA.setCustomer(customerA);
+		bankAccountA.setCustomer(customerA);
+		bankAccountA.balanceDeposit(500.76);
 		customerRepository.save(customerA);
-		bankAccountRepository.save(bankAccountA);
 
 		Customer customerB = new Customer("Lucas Edson das Neves", "26156030000", LocalDate.parse("1963-06-04"),
 				"lucas@email.com", "67987386413");
 		Address addressB = new Address("Rua Onofre Pereira de Matos", "896", "Jardim Climax", null, "79820130",
 				"Dourados", "MS", "Brasil");
-		BankAccount bankAccountB = new BankAccount("456", 546564.67, customerB);
+		BankAccount bankAccountB = new BankAccount("456");
 		customerB.setAddress(addressB);
+		customerB.setBankAccount(bankAccountB);
 		addressB.setCustomer(customerB);
+		bankAccountB.setCustomer(customerB);
 		customerRepository.save(customerB);
-		bankAccountRepository.save(bankAccountB);
 
 		Customer customerC = new Customer("Anthony e Emanuel Padaria Ltda", "38839012000187", null, "padarialtda",
 				"11996059961");

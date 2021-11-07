@@ -183,24 +183,6 @@ public class CustomerService {
 		return BankAccountFactory.Create(bankAccount);
 	}
 
-	public BankAccountDto updateBankAccount(UUID customerId, BankAccountForm form) throws ExceptionHandler {
-		Customer customer = repository.findById(customerId)
-				.orElseThrow(() -> new NotFoundException("Customer not found"));
-
-		var bankAccount = customer.getBankAccount();
-
-		if (bankAccount == null) {
-			throw new NotFoundException("Bank Account not found");
-		}
-
-		bankAccount.setAccount(form.account);
-		bankAccount.setUpdatedAt(LocalDateTime.now());
-
-		bankAccountRepository.save(bankAccount);
-
-		return BankAccountFactory.Create(bankAccount);
-	}
-
 	public BankAccountDto updateBankAccountActive(UpdateBankAccountActiveForm form, UUID id) throws ExceptionHandler {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 

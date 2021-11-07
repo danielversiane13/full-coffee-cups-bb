@@ -123,13 +123,6 @@ public class CustomerController {
 		return ResponseEntity.created(uri).body(dto);
 	}
 
-	@PutMapping("/{customerId}/bank-accounts")
-	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable UUID customerId,
-			@RequestBody @Valid BankAccountForm form) throws ExceptionHandler {
-		var dto = service.updateBankAccount(customerId, form);
-		return ResponseEntity.ok(dto);
-	}
-
 	@PatchMapping(value = "/{customerId}/bank-accounts/active")
 	@ApiOperation("Update status active of bank account by customer id")
 	public ResponseEntity<BankAccountDto> update(@PathVariable UUID customerId,

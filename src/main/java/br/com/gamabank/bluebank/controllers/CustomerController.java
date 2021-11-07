@@ -47,7 +47,8 @@ public class CustomerController {
 
 	@PostMapping
 	@ApiOperation("Create a customer")
-	public ResponseEntity<CustomerDto> add(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CustomerDto> add(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder)
+			throws ExceptionHandler {
 		var dto = service.create(form);
 		URI uri = uriBuilder.path("/customers/{customerId}").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);
@@ -121,13 +122,6 @@ public class CustomerController {
 		var dto = service.createBankAccount(customerId, form);
 		URI uri = uriBuilder.path("/customers/{customerId}/bank-account").buildAndExpand(dto.id).toUri();
 		return ResponseEntity.created(uri).body(dto);
-	}
-
-	@PutMapping("/{customerId}/bank-accounts")
-	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable UUID customerId,
-			@RequestBody @Valid BankAccountForm form) throws ExceptionHandler {
-		var dto = service.updateBankAccount(customerId, form);
-		return ResponseEntity.ok(dto);
 	}
 
 	@PatchMapping(value = "/{customerId}/bank-accounts/active")

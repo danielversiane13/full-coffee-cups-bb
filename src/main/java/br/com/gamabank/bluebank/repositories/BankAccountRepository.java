@@ -12,6 +12,8 @@ import br.com.gamabank.bluebank.entities.Customer;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, UUID> {
 
-	List<BankAccount> findAllByCustomer(Customer customer);
+	public List<BankAccount> findAllByCustomer(Customer customer);
+
+	public BankAccount findOneByAccount(String account);
 
 }

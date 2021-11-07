@@ -6,11 +6,9 @@ import javax.validation.constraints.Size;
 public class AddressForm {
 
 	@NotBlank
-	@Size(min = 3)
 	public String street;
 
 	@NotBlank
-	@Size(min = 1)
 	public String number;
 
 	@NotBlank
@@ -23,7 +21,6 @@ public class AddressForm {
 	public String zipcode;
 
 	@NotBlank
-	@Size(min = 4)
 	public String city;
 
 	@NotBlank
@@ -31,7 +28,6 @@ public class AddressForm {
 	public String state;
 
 	@NotBlank
-	@Size(min = 4)
 	public String country;
 
 }

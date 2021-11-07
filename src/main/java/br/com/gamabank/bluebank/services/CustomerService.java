@@ -54,8 +54,14 @@ public class CustomerService {
 		return CustomerFactory.Create(customer);
 	}
 
-	public CustomerDto create(CustomerForm form) {
+	public CustomerDto create(CustomerForm form) throws ExceptionHandler {
 		Customer customer = CustomerFactory.Create(form);
+
+		var exitsCpfOrCnpj = repository.findOneByCpfCnpj(customer.getCpfCnpj());
+		if (exitsCpfOrCnpj != null) {
+			throw new NotAcceptableException("This cpf or cnpj already exists a register");
+		}
+
 		repository.save(customer);
 
 		return CustomerFactory.Create(customer);
@@ -64,12 +70,7 @@ public class CustomerService {
 	public CustomerDto update(CustomerForm form, UUID id) throws ExceptionHandler {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
-		customer.setName(form.name);
-		customer.setCpfCnpj(form.cpfCnpj);
-		customer.setBirthDate(form.birthDate);
-		customer.setEmail(form.email);
-		customer.setPhone(form.phone);
-		customer.setUpdatedAt(LocalDateTime.now());
+		customer = CustomerFactory.Update(customer, form);
 
 		repository.save(customer);
 
@@ -167,8 +168,12 @@ public class CustomerService {
 		Customer customer = repository.findById(customerId)
 				.orElseThrow(() -> new NotFoundException("Customer not found"));
 
-		var hasBankAccount = customer.getBankAccount();
+		var existsAccount = bankAccountRepository.findOneByAccount(form.account);
+		if (existsAccount != null) {
+			throw new NotAcceptableException("This account already exists");
+		}
 
+		var hasBankAccount = customer.getBankAccount();
 		if (hasBankAccount != null) {
 			throw new NotAcceptableException("Customer already has a BankAccount");
 		}
@@ -179,24 +184,6 @@ public class CustomerService {
 		bankAccount.setCustomer(customer);
 
 		repository.save(customer);
-
-		return BankAccountFactory.Create(bankAccount);
-	}
-
-	public BankAccountDto updateBankAccount(UUID customerId, BankAccountForm form) throws ExceptionHandler {
-		Customer customer = repository.findById(customerId)
-				.orElseThrow(() -> new NotFoundException("Customer not found"));
-
-		var bankAccount = customer.getBankAccount();
-
-		if (bankAccount == null) {
-			throw new NotFoundException("Bank Account not found");
-		}
-
-		bankAccount.setAccount(form.account);
-		bankAccount.setUpdatedAt(LocalDateTime.now());
-
-		bankAccountRepository.save(bankAccount);
 
 		return BankAccountFactory.Create(bankAccount);
 	}

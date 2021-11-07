@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gamabank.bluebank.dto.BalanceMovementDto;
 import br.com.gamabank.bluebank.services.BankAccountService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/bank-accounts")
@@ -22,6 +23,7 @@ public class BankAccountController {
 	private BankAccountService service;
 
 	@GetMapping(value = "/{bankAccountId}/balance-movements")
+	@ApiOperation("Find all balance movements by bank account id")
 	public ResponseEntity<Page<BalanceMovementDto>> findByFromBankAccountIdOrToBankAccountId(Pageable pageable,
 			@PathVariable UUID bankAccountId) {
 		return ResponseEntity.ok(service.findByFromBankAccountIdOrToBankAccountId(pageable, bankAccountId));

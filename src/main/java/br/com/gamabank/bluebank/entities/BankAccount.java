@@ -25,11 +25,10 @@ public class BankAccount extends SuperEntity {
 		super();
 	}
 
-	public BankAccount(String account, Double balance, Customer customer) {
+	public BankAccount(String account) {
 		super();
 		this.account = account;
-		this.balance = balance;
-		this.customer = customer;
+		this.balance = 0.0;
 	}
 
 	public String getAccount() {

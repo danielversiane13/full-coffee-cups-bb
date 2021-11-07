@@ -1,18 +1,10 @@
 package br.com.gamabank.bluebank.forms;
 
-import java.util.UUID;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 public class BankAccountForm {
 
-	@NotNull
-	public UUID customerId;
-	
-	@NotNull
+	@NotBlank
 	public String account;
-	
-	@NotNull
-	public Double balance;
-	
+
 }

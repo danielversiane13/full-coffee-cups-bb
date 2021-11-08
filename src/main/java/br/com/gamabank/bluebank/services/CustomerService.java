@@ -71,7 +71,7 @@ public class CustomerService {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
 		if (!customer.getCpfCnpj().equals(form.cpfCnpj.replace(".", "").replace("-", "").replace("/", ""))) {
-			var exitsCpfOrCnpj = repository.findOneByCpfCnpj(customer.getCpfCnpj());
+			var exitsCpfOrCnpj = repository.findOneByCpfCnpj(form.cpfCnpj);
 			if (exitsCpfOrCnpj != null && exitsCpfOrCnpj.getId() != customer.getId()) {
 				throw new NotAcceptableException("This cpf or cnpj already exists a register");
 			}

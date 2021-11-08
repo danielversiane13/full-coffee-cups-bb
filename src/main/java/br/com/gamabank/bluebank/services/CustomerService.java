@@ -70,6 +70,13 @@ public class CustomerService {
 	public CustomerDto update(CustomerForm form, UUID id) throws ExceptionHandler {
 		Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
 
+		if (!customer.getCpfCnpj().equals(form.cpfCnpj.replace(".", "").replace("-", "").replace("/", ""))) {
+			var exitsCpfOrCnpj = repository.findOneByCpfCnpj(customer.getCpfCnpj());
+			if (exitsCpfOrCnpj != null) {
+				throw new NotAcceptableException("This cpf or cnpj already exists a register");
+			}
+		}
+
 		customer = CustomerFactory.Update(customer, form);
 
 		repository.save(customer);

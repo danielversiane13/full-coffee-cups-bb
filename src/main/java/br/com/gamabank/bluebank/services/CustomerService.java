@@ -72,7 +72,7 @@ public class CustomerService {
 
 		if (!customer.getCpfCnpj().equals(form.cpfCnpj.replace(".", "").replace("-", "").replace("/", ""))) {
 			var exitsCpfOrCnpj = repository.findOneByCpfCnpj(customer.getCpfCnpj());
-			if (exitsCpfOrCnpj != null) {
+			if (exitsCpfOrCnpj != null && exitsCpfOrCnpj.getId() != customer.getId()) {
 				throw new NotAcceptableException("This cpf or cnpj already exists a register");
 			}
 		}

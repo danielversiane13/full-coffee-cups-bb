@@ -1,3 +1,5 @@
+Trabalho feito em dupla como entrega final para o programa **IBM Blue Academy** 😃🤝👩‍💻
+
 Openjdk version: 11.0.11
 
 # Api documentation:
